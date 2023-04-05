@@ -1,0 +1,38 @@
+Como fazer teste automatizado na linguagem mais confortável CRUD
+
+Todo o caminho percorrido até chegar na resposta
+
+
+
+
+
+
+
+
+
+
+
+Importamos um trabalho que já haviamos feito CRUD em python
+
+Vimos como funcionava o pytest : https://medium.com/data-hackers/testes-unit%C3%A1rios-para-profissionais-de-dados-com-pytest-o-guia-definitivo-5ac05f4ef866
+
+Professor ajudou com as duas primeiras funções e a entender como funcionava o pytest
+
+Como as duas primeirais foi o professor estava presente, vou pular pra terceira, com apenas um comentário:
+	Tivemos que bater bastante a cabeça, pois quando tentávamos fazer um update na tabela, ela não ia, pois dizia que o database estava 	bloqueado, aparentemente é necessário fechar a conexão com o banco antes de abrir uma nova, como nas funções que o professor fez não	tinha, ele fica travando o banco, levamos um bom tempo pra descobrir isso.
+
+Função test_table_update
+	Essa testa se a função de update está correta, a primeira parte foi descobrir alguma função que retornasse se havia sido feita 	alteração, pesquisando na internet, descobrimos a cursor.rowcount, essa foi a parte fácil. A parte dificil foi resolver alguns erros 	que estava dando, como por exemplo, a função necessita de um cursor e ele vira a nova conexão com o banco, então foi necessário 	alguns testes para descobrir que seria necessário passar ele como parâmetro, para conseguir fazer a contage.
+	Após isso, passamos para o lógica que seria necessário testar todas as entradas da tabela, por isso criamos uma lista com as 	possíveis entradas e utilizamos um for para fazer o UPDATE, sempre que o UPDATE for verdadeiro, ele aumenta um contador.
+	Por final colocamos que o assert = count.changes == 3.
+
+Função test_print_banco e test_print_selected
+	Essa função foi mais fácil de fazer, usando como base a de UPDATE, primeiro testamos todas as variáveis e os valores que elas 	recebem, fazendo isso, descobrimos que o SELECT será executado em qualquer situação, desde que seja passado um ID, o que vai mudar é 	o valor que vai retornar, com isso, descobrimos que podiamos nos aproveitar disso para saber se a função está mesmo retornando o 	valor do SELECT ou, caso não exista valor, um array vazio [].
+	O que precisamos fazer foi mudar um pouco a função, fazendo ela retornar o valor do registro, que seria onde está armazenado a 	informação do select e fizemos uma assert onde, se registro != [], significa que ele retornou valores da tabela, ou seja, 	funcionando corretamente.
+
+Função test_criarTabela 
+	basicamente é feito um select na tabela pessoas, pois a funcao em si cria a tabela e só ela mesma, se ela existir é pq a funcao funcionou corretamente
+
+Função test_deleteRow
+	após o insercao no banco de um valor teste, se chamarmos a funca de remover a insercao e um select significa que a funcao de deleteromw foi um sucesso
+
